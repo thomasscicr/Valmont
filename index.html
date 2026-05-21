@@ -406,7 +406,7 @@ body::after { content:''; position:fixed; inset:0; background-image:url("data:im
 /* MAIN */
 .main { margin-left:var(--sw); flex:1; height:100vh; display:flex; flex-direction:column; overflow:hidden; }
 .view { display:none; flex:1; flex-direction:column; height:100%; overflow:hidden; opacity:0; transform:translateY(6px); }
-.view.on { display:flex; animation:viewIn .28s cubic-bezier(.4,0,.2,1) forwards; }
+.view.on { display:flex; opacity:1; transform:translateY(0); }
 @keyframes viewIn { from{opacity:0;transform:translateY(7px);}to{opacity:1;transform:translateY(0);} }
 
 /* HOME */
@@ -1132,7 +1132,7 @@ canvas#db-chart { width:100%; }
 </div>
 
 <!-- SHELL -->
-<div id="shell" style="display:flex;width:100%;height:100%;">
+<div id="shell" style="display:none;width:100%;height:100%;">
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
@@ -1464,7 +1464,7 @@ canvas#db-chart { width:100%; }
     </div>
 
     <!-- HOME -->
-    <div id="v-home" class="view on" style="position:relative;">
+    <div id="v-home" class="view" style="position:relative;">
 
       <div class="home-wrap">
         <div class="home-logo">VALMONT</div>
@@ -1876,7 +1876,16 @@ function doLogin(){
   }
   const ls=document.getElementById('login-screen');
   ls.style.transition='opacity .5s ease'; ls.style.opacity='0';
-  setTimeout(()=>ls.style.display='none',500);
+  setTimeout(()=>{
+    ls.style.display='none';
+    const shell=document.getElementById('shell');
+    shell.style.display='flex';
+    // ensure home view is visible
+    const home=document.getElementById('v-home');
+    if(home){ home.classList.add('on'); }
+    const nb=document.getElementById('nb-home');
+    if(nb){ nb.classList.add('active'); }
+  },500);
 }
 
 // Add shake keyframes dynamically
